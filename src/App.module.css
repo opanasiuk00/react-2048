@@ -1,0 +1,88 @@
+.wrapper {
+    min-height: 100vh;
+}
+
+.container {
+    width: 520px;
+    margin: 0 auto;
+    padding: 5px;
+}
+
+@media (max-width: 678px) {
+    .App {
+        width: 280px;
+    }
+}
+
+.header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    padding: 20px 0;
+}
+
+.header h1 {
+    color: var(--gray);
+    margin: 0;
+    font-size: 50px;
+}
+
+@media (max-width: 678px) {
+    .header h1 {
+        font-size: 35px;
+    }
+}
+
+.gameBoard {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(4, var(--cell-size));
+    grid-template-rows: repeat(4, var(--cell-size));
+    gap: var(--cell-gap);
+    border-radius: var(--cell-border);
+}
+
+.cell {
+    background-color: var(--cell-background);
+    border-radius: var(--cell-border);
+}
+
+.button {
+    margin-top: 20px;
+    width: 100%;
+    padding: 10px 0;
+    border-radius: var(--cell-border);
+    border: none;
+    cursor: pointer;
+    background: var(--orange);
+    transition: background 0.3s ease;
+    color: var(--black-light);
+    font-weight: 700;
+    font-size: 25px;
+}
+
+.button:hover {
+    background: var(--orange-hover);
+}
+
+.button:enabled:active {
+    box-shadow: 0 0 0 1px var(--button-focus);
+    animation: anim-shadow 0.3s forwards;
+}
+
+@keyframes anim-shadow {
+    100% {
+        box-shadow: 0 0 20px 10px var(--button-click);
+    }
+}
+
+.modalTitle {
+    font-size: 50px;
+    color: var(--black);
+}
+
+@media (max-width: 678px) {
+    .modalTitle {
+        font-size: 40px;
+        color: var(--black);
+    }
+}

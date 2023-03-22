@@ -1,0 +1,22 @@
+h3,
+h4 {
+    margin: 0;
+}
+
+.ratting {
+    display: inline-block;
+    background: var(--white);
+    padding: 5px 20px;
+    font-size: var(--font-size);
+    text-align: center;
+    border-radius: var(--cell-border);
+}
+
+.title {
+    color: var(--cell-background);
+    text-transform: uppercase;
+}
+
+.points {
+    color: var(--black);
+}

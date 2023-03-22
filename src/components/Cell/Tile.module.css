@@ -1,0 +1,26 @@
+.tile {
+    position: absolute;
+    top: calc(var(--y) * (var(--cell-size) + var(--cell-gap)));
+    left: calc(var(--x) * (var(--cell-size) + var(--cell-gap)));
+    width: var(--cell-size);
+    height: var(--cell-size);
+    border-radius: var(--cell-border);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+    font-weight: 700;
+    transition: 0.1s;
+    user-select: none;
+}
+
+.animation {
+    animation: show 0.2s;
+}
+
+@keyframes show {
+    0% {
+        opacity: 0.5;
+        transform: scale(0);
+    }
+}

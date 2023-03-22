@@ -1,0 +1,32 @@
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    background: var(--modal-bg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    animation: modalShow 0.3s ease;
+}
+
+@keyframes modalShow {
+    0% {
+        opacity: 0;
+    }
+}
+
+.content {
+    height: 60%;
+    width: 480px;
+    padding: 10px;
+    position: relative;
+}
+
+@media (max-width: 768px) {
+    .content {
+        width: 240px;
+    }
+}
