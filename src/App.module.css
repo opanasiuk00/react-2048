@@ -9,7 +9,7 @@
 }
 
 @media (max-width: 678px) {
-    .App {
+    .container {
         width: 280px;
     }
 }
