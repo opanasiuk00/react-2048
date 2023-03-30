@@ -1,7 +1,7 @@
 import { tileTipe } from "./tyleTipe";
 
 // розбитя на колонкі
-export function groupCellByColumn(array: tileTipe[]) {
+export function groupCellByColumn(array: tileTipe[]): tileTipe[][] {
     return array.reduce((groupedCells: tileTipe[][], cell) => {
         groupedCells[cell.x] = groupedCells[cell.x] || [];
         groupedCells[cell.x][cell.y] = cell;
@@ -10,12 +10,12 @@ export function groupCellByColumn(array: tileTipe[]) {
 }
 
 // колонкі reverse
-export function groupCellByColumnReverce(array: tileTipe[]) {
+export function groupCellByColumnReverce(array: tileTipe[]): tileTipe[][] {
     return groupCellByColumn(array).map((column) => [...column].reverse());
 }
 
 // розбитя на рядкі
-export function groupCellByRow(array: tileTipe[]) {
+export function groupCellByRow(array: tileTipe[]): tileTipe[][] {
     return array.reduce((groupedCells: tileTipe[][], cell) => {
         groupedCells[cell.y] = groupedCells[cell.y] || [];
         groupedCells[cell.y][cell.x] = cell;
@@ -24,7 +24,7 @@ export function groupCellByRow(array: tileTipe[]) {
 }
 
 // рядкі reverse
-export function groupCellByRowReverse(array: tileTipe[]) {
+export function groupCellByRowReverse(array: tileTipe[]): tileTipe[][] {
     return groupCellByRow(array).map((row) => [...row].reverse());
 }
 
@@ -34,10 +34,9 @@ export function slideTilesInGroup(
     position: string,
     transform: string,
     size: number
-) {
+): tileTipe[] {
     let newTiles: tileTipe[] | [] = [];
     const prevTiles = group.filter((item) => item);
-    console.log(group);
     // якщо масів рівний одному
     if (prevTiles.length === 1) {
         return [
@@ -70,7 +69,10 @@ export function slideTilesInGroup(
 // перевірка на збіг
 // false - співпадає
 // true - ні
-export function sortArray(prevArray: tileTipe[], newArray: tileTipe[]) {
+export function sortArray(
+    prevArray: tileTipe[],
+    newArray: tileTipe[]
+): boolean {
     if (prevArray.length !== newArray.length) {
         return true;
     }

@@ -9,19 +9,19 @@ import { useSwipeable } from 'react-swipeable';
 import { tileTipe } from './Utils/tyleTipe';
 import { CELL, GRID_COUNT, GRID_SIZE } from './Utils/initialState';
 
-const dataJson = localStorage.getItem('2048-react');
-const data = dataJson ? JSON.parse(dataJson) : [];
+const dataJson: string | null = localStorage.getItem('2048-react');
+const data: tileTipe[] | null = dataJson ? JSON.parse(dataJson) : null;
 
 
 function App() {
 	// масів квадратіків 
-	const [tileArray, setTileArray] = useState<tileTipe[] | []>(data);
+	const [tileArray, setTileArray] = useState<tileTipe[] | null>(data);
 	// макс число
 	const [maxCurr, setMaxCurr] = useState<number>(0);
 	// для модального вікна, title - заголовок, isActive - стан вікна
 	const [isActiveModal, setIsActiveModal] = useState<{ isActive: boolean, title: string | null }>({ isActive: false, title: null });
 	// пошук найбільшого числа
-	const getMaxCurr: number = Math.max(...tileArray.map((obj) => obj.name));
+	const getMaxCurr: number | undefined = tileArray?.map((obj) => obj.name).sort((a, b) => b - a).at(0);
 	// унікальний id
 	const id: string = nanoid();
 
@@ -34,8 +34,8 @@ function App() {
 
 	// створення нового квадратіка при 1 рендері
 	useEffect(() => {
-		if (tileArray.length === 0) {
-			createNew(tileArray)
+		if (tileArray === null) {
+			createNew([])
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
@@ -48,7 +48,9 @@ function App() {
 		localStorage.setItem('2048-react', setLocal);
 
 		// макс, набране число
-		setMaxCurr(getMaxCurr);
+		if (getMaxCurr) {
+			setMaxCurr(getMaxCurr);
+		}
 
 		// якщо 2048 набрано то win
 		if (getMaxCurr === 2048) {
@@ -57,7 +59,7 @@ function App() {
 		}
 
 		// якщо нема ходів і не було набрано 2048 то 'Game over!'
-		if (tileArray.length === GRID_COUNT && !moveUp(tileArray) && !moveDown(tileArray) && !moveLeft(tileArray) && !moveRight(tileArray) && getMaxCurr !== 2048) {
+		if (tileArray?.length === GRID_COUNT && !moveUp(tileArray) && !moveDown(tileArray) && !moveLeft(tileArray) && !moveRight(tileArray) && getMaxCurr !== 2048) {
 			setIsActiveModal({ isActive: true, title: 'Game over!' })
 			window.removeEventListener('keydown', handleKeyDown);
 		}
@@ -70,9 +72,11 @@ function App() {
 	const handleKeyDown = (e: KeyboardEvent) => {
 		switch (e.key) {
 			case 'ArrowUp':
+				e.preventDefault();
 				neeedToRender(moveUp(tileArray));
 				break;
 			case 'ArrowDown':
+				e.preventDefault();
 				neeedToRender(moveDown(tileArray));
 				break;
 			case 'ArrowLeft':
@@ -104,20 +108,32 @@ function App() {
 			}
 		});
 
-	function moveUp(array: tileTipe[]) {
+	function moveUp(array: tileTipe[] | null): tileTipe[] | null {
+		if (array === null) {
+			return null
+		}
 		const groupCell = groupCellByColumn(array);
 		return SlideTiles(groupCell, array, 'start', 'y', (GRID_SIZE - 1));
 	}
 
-	function moveDown(array: tileTipe[]) {
+	function moveDown(array: tileTipe[] | null): tileTipe[] | null {
+		if (array === null) {
+			return null
+		}
 		const groupCell = groupCellByColumnReverce(array);
 		return SlideTiles(groupCell, array, 'end', 'y', (GRID_SIZE - 1));
 	}
-	function moveLeft(array: tileTipe[]) {
+	function moveLeft(array: tileTipe[] | null): tileTipe[] | null {
+		if (array === null) {
+			return null
+		}
 		const groupCell = groupCellByRow(array);
 		return SlideTiles(groupCell, array, 'start', 'x', (GRID_SIZE - 1));
 	}
-	function moveRight(array: tileTipe[]) {
+	function moveRight(array: tileTipe[] | null): tileTipe[] | null {
+		if (array === null) {
+			return null
+		}
 		const groupCell = groupCellByRowReverse(array);
 		return SlideTiles(groupCell, array, 'end', 'x', (GRID_SIZE - 1));
 	}
@@ -129,11 +145,11 @@ function App() {
 	}
 
 	// 
-	function SlideTiles(groupTiles: tileTipe[][], prevTiles: tileTipe[], position: string, transform: string, size: number) {
+	function SlideTiles(groupTiles: tileTipe[][], prevTiles: tileTipe[], position: string, transform: string, size: number): tileTipe[] | null {
 
 		const newTiles = groupTiles.flatMap(item => slideTilesInGroup(item, position, transform, size));
 
-		const coincidence = sortArray(prevTiles, newTiles);
+		const coincidence: boolean = sortArray(prevTiles, newTiles);
 
 		if (!coincidence) {
 			return null;
@@ -155,19 +171,19 @@ function App() {
 
 	return (
 		<>
-			<div className={styles.wrapper} {...handlers}>
+			<div className={styles.wrapper}>
 				<div className={styles.container}>
 					<header className={styles.header}>
 						<h1>2048</h1>
 						<Ratting title='Score' points={maxCurr} />
 					</header>
-					<div className={styles.gameBoard}>
+					<div className={styles.gameBoard} {...handlers}>
 						{
 							CELL.map((item, i) => <div key={i} className={styles.cell} />)
 
 						}
 						{
-							tileArray.map((item) => <Tile key={item.id} y={item.y} x={item.x}>{item.name}</Tile>)
+							tileArray?.map((item) => <Tile key={item.id} y={item.y} x={item.x}>{item.name}</Tile>)
 						}
 					</div>
 					<button className={styles.button} onClick={handleNewGame}>New game</button>
