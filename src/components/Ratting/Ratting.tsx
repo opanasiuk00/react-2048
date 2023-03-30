@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { memo } from 'react';
 import styles from './Ratting.module.css';
 import { RattingProps } from './Ratting.props';
 
-// в даному випадку, мемо можна не використовувати
-export const Ratting = ({ title, points }: RattingProps): JSX.Element => {
+export const Ratting = memo(({ title, points }: RattingProps): JSX.Element => {
 
 	return (
 		<div className={styles.ratting}>
@@ -11,4 +10,4 @@ export const Ratting = ({ title, points }: RattingProps): JSX.Element => {
 			<h3 className={styles.points}>{points}</h3>
 		</div>
 	)
-};
+});
